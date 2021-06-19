@@ -25,6 +25,7 @@ val squareSizeFactor : Float = 9.9f
 val rFactor : Float = 2.9f
 val delay : Long = 20
 val rot : Float = 270f
+val backColor : Int = Color.parseColor("#BDBDBD")
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -184,6 +185,29 @@ class SquareProgressView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : SquareProgressView) {
+
+        private val animator : Animator = Animator(view)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val sp : SquareProgressArc = SquareProgressArc(0)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            sp.draw(canvas, paint)
+            animator.animate {
+                sp.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sp.startUpdating {
+                animator.start()
+            }
         }
     }
 }
