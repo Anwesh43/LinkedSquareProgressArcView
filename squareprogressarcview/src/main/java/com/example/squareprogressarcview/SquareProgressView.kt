@@ -29,3 +29,33 @@ val rot : Float = 270f
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int): Float = Math.min(n.inverse(), maxScale(i, n)) * n
+
+fun Canvas.drawSquareProgressArc(scale : Float, w : Float, h : Float, paint : Paint) {
+    val size : Float = Math.min(w, h) / squareSizeFactor
+    val r : Float = Math.min(w, h) / rFactor
+    val sc1 : Float = scale.divideScale(0, parts)
+    val sc2 : Float = scale.divideScale(1, parts)
+    val sc3 : Float = scale.divideScale(2, parts)
+    val u : Float = size * sc1
+    save()
+    translate(w / 2, h / 2)
+    save()
+    rotate(rot * sc2)
+    paint.style = Paint.Style.FILL
+    drawRect(RectF(-u / 2, -u / 2, u / 2, u / 2), paint)
+    restore()
+    save()
+    paint.style = Paint.Style.STROKE
+    drawArc(RectF(-r, -r, r, r), rot * sc3, rot * (sc2 - sc3), false, paint)
+    restore()
+    restore()
+}
+
+fun Canvas.drawSPANode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.color = colors[i]
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    drawSquareProgressArc(scale, w, h, paint)
+}
