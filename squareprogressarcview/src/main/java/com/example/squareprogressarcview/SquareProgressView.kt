@@ -37,11 +37,13 @@ fun Canvas.drawSquareProgressArc(scale : Float, w : Float, h : Float, paint : Pa
     val sc1 : Float = scale.divideScale(0, parts)
     val sc2 : Float = scale.divideScale(1, parts)
     val sc3 : Float = scale.divideScale(2, parts)
+    val sc4 : Float = scale.divideScale(3, parts)
     val u : Float = size * sc1
     save()
     translate(w / 2, h / 2)
     save()
     rotate(rot * sc2)
+    translate(r, (w / 2 + size) * sc4)
     paint.style = Paint.Style.FILL
     drawRect(RectF(-u / 2, -u / 2, u / 2, u / 2), paint)
     restore()
