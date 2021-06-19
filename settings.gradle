@@ -1,0 +1,3 @@
+include ':squareprogressarcview'
+include ':app'
+rootProject.name = "LinkedSquareProgressArcView"
